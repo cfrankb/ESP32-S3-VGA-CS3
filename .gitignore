@@ -1,0 +1,7 @@
+*.old
+.vscode/
+backup/
+build/
+*.code-workspace
+sdkconfig
+.cache/

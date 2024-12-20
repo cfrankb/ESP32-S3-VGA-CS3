@@ -1,0 +1,3 @@
+# spikepavel's ESP32-S3 VGA library
+# https://github.com/spikepavel/ESP32-S3-VGA
+# License: https://github.com/spikepavel/ESP32-S3-VGA/blob/main/README.md
