@@ -34,9 +34,11 @@ extern "C" void app_main(void)
 {
 	const PinConfig pins(-1, -1, 6, 7, 8, -1, -1, -1, 12, 13, 14, -1, -1, -1, 18, 21, 1, 2); // R G B h v
 
-	Mode mode = Mode::MODE_640x480x60;
+	//	Mode mode = Mode::MODE_640x480x60;
+	Mode mode = Mode::MODE_320x240x60;
 
-	if (!vga.init(pins, mode, 8, 3))
+	// if (!vga.init(pins, mode, 16, 3))
+	if (!vga.init(pins, mode, 16, 4))
 		while (1)
 			delay(1);
 
@@ -57,12 +59,12 @@ extern "C" void app_main(void)
 	while (1)
 	{
 		auto rgb = rand();
-		ESP_LOGE(TAG, "vga clear: %x", rgb);
+		ESP_LOGI(TAG, "vga clear: %.4x", rgb & 0xfff);
 		vga.clear(rgb);
 		delay(1000);
-		for (int count = 0; count < 1000; count++)
-			vga.dot(rand() % 640, rand() % 480, rand() % 255);
-		delay(1000);
+		// for (int count = 0; count < 1000; count++)
+		//	vga.dot(rand() % 640, rand() % 480, rand() % 255);
+		//	delay(1000);
 		continue;
 
 		vga.clear(0);
