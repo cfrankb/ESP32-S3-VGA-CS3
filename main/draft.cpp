@@ -50,7 +50,7 @@ void CDraft::drawTile(uint16_t x, uint16_t y, uint16_t *tile, bool alpha) const
 
 void CDraft::fill(const uint16_t color) const
 {
-    ESP_LOGI(TAG, "Display Fill Display %d x %d", m_width, m_height);
+    ESP_LOGI(TAG, "Fill Buffer %d x %d", m_width, m_height);
     assert(m_buf != nullptr);
     for (int i = 0; i < m_width * m_height; ++i)
     {
@@ -60,11 +60,11 @@ void CDraft::fill(const uint16_t color) const
 
 void CDraft::drawFont(const int x, const int y, const char *s, uint16_t color) const
 {
-    // ESP_LOGI(TAG, "Display Draw Font at (%d,%d): %s", x, y, s);
+    // ESP_LOGI(TAG, "Draw Font at (%d,%d): %s", x, y, s);
     uint8_t *font = &bitfont_bin;
     for (int j = 0; s[j]; ++j)
     {
-        int u = s[j] < 127 ? std::max(s[j] - 32, 0) : 0;
+        int u = s[j] < 127 ? std::max(s[j] - ' ', 0) : 0;
         uint16_t *o = m_buf + x + y * m_width + 8 * j;
         for (int yy = 0; yy < 8; ++yy)
         {

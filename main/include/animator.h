@@ -1,5 +1,4 @@
-#ifndef CANIMATOR_H
-#define CANIMATOR_H
+#pragma once
 
 #include <inttypes.h>
 
@@ -33,5 +32,3 @@ protected:
 
     int m_offset = 0;
 };
-
-#endif // CANIMATOR_H

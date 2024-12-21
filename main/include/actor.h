@@ -1,5 +1,4 @@
-#ifndef __ACTOR__H
-#define __ACTOR__H
+#pragma once
 #include <stdint.h>
 #include "map.h"
 
@@ -45,5 +44,3 @@ protected:
 
     friend class CGame;
 };
-
-#endif

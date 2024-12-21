@@ -1,5 +1,4 @@
-#ifndef JOYSTICK_H
-#define JOYSTICK_H
+#pragma once
 
 #include <stdint.h>
 
@@ -16,5 +15,3 @@ enum JoyDir
 
 bool initJoystick();
 uint16_t readJoystick();
-
-#endif

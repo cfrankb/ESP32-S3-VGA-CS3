@@ -1,5 +1,4 @@
-#ifndef __MAP_H
-#define __MAP_H
+#pragma once
 
 #include <stdint.h>
 #include <cstdio>
@@ -62,5 +61,3 @@ protected:
     std::string m_lastError;
     static uint16_t toKey(const uint8_t x, const uint8_t y);
 };
-
-#endif

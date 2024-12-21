@@ -8,7 +8,6 @@
 #include "colors.h"
 #include "esphelpers.h"
 #include "draft.h"
-#include "tileset.h"
 #include "tilesdata.h"
 #include "joystick.h"
 #include "animzdata.h"

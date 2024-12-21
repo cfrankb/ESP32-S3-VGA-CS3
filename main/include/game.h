@@ -1,5 +1,4 @@
-#ifndef __GAME_H
-#define __GAME_H
+#pragma once
 #include <stdint.h>
 #include "actor.h"
 #include "map.h"
@@ -18,7 +17,6 @@ public:
     bool move(int dir);
     void manageMonsters(int ticks);
     void managePlayer();
-    void animate();
     static Pos translate(const Pos &p, int aim);
     void consume();
     static bool hasKey(uint8_t c);
@@ -102,4 +100,3 @@ protected:
     void addPoints(int points);
     void addLife();
 };
-#endif
