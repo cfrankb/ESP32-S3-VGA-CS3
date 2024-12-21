@@ -6,7 +6,6 @@
 #include "engine.h"
 #include "game.h"
 #include "colors.h"
-#include "esphelpers.h"
 #include "draft.h"
 #include "tilesdata.h"
 #include "joystick.h"
@@ -14,12 +13,8 @@
 #include "maparch.h"
 #include "animator.h"
 #include "conf.h"
+#include "data.h"
 #include "VGA.h"
-
-extern uint8_t tiles_mcz;
-extern uint8_t animz_mcz;
-extern uint8_t annie_mcz;
-extern uint8_t levels_mapz;
 
 static const char *TAG = "engine";
 static CDraft draft(CONFIG_WIDTH, CEngine::TILE_SIZE);

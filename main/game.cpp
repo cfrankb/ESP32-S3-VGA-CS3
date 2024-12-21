@@ -5,12 +5,12 @@
 // #include "joystick.h"
 #include "level.h"
 #include "actor.h"
+#include "data.h"
 #include "sprtypes.h"
 #include "tilesdata.h"
 
 CMap map(30, 30);
 uint8_t CGame::m_keys[6];
-extern uint8_t levels_mapz;
 
 CGame::CGame()
 {

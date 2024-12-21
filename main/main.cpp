@@ -1,6 +1,7 @@
 // https://embeddedtutorials.com/eps32/esp-idf-cpp-with-cmake-for-esp32/
 
 #include <esp_log.h>
+#include <esp_mac.h>
 #include <stdio.h>
 #include <cstring>
 #include <cstdio>
@@ -8,7 +9,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/timers.h"
-#include "esp_system.h"
+// #include "esp_system.h"
 // #include "joystick.h"
 #include "map.h"
 #include "level.h"
@@ -25,7 +26,7 @@ VGA vga;
 void delayMS(int ms)
 {
     int _ms = ms + (portTICK_PERIOD_MS - 1);
-    TickType_t xTicksToDelay = _ms / portTICK_PERIOD_MS;
+    auto xTicksToDelay = _ms / portTICK_PERIOD_MS;
     vTaskDelay(xTicksToDelay);
 }
 
