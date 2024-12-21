@@ -1,5 +1,4 @@
-#ifndef VGA_H
-#define VGA_H
+#pragma once
 
 #include "PinConfig.h"
 #include "Mode.h"
@@ -8,8 +7,8 @@
 
 class VGA
 {
-	
-	public:
+
+public:
 	Mode mode;
 	int bufferCount;
 	int bits;
@@ -18,10 +17,9 @@ class VGA
 	int backBuffer;
 	DMAVideoBuffer *dmaBuffer;
 	int dmaChannel;
-	
-	
-	public:
-////////////
+
+public:
+	////////////
 	int cursorX, cursorY, cursorBaseX;
 	long frontColor, backColor;
 	Font *font;
@@ -30,11 +28,9 @@ class VGA
 
 	int xres;
 	int yres;
-////////////
-	
-	
-	
-	public:
+	////////////
+
+public:
 	VGA();
 	~VGA();
 	bool init(const PinConfig pins, const Mode mode, int bits, int SCREEN);
@@ -48,13 +44,14 @@ class VGA
 	void dotFast16(int x, int y, int rgb);
 	void dotFast8(int x, int y, int rgb);
 	int rgb(uint8_t r, uint8_t g, uint8_t b);
-	
+	void drawTile(uint16_t orgX, uint16_t orgY, uint16_t *pixels);
+
 	void setTextColor(uint16_t front, uint16_t back);
 	void setFont(Font &font);
 	void setCursor(int x, int y);
 	void drawChar(int x, int y, int ch);
 	void drawCharScale(int x, int y, int ch, int scaleFont);
-	
+
 	void print(const char ch);
 	void println(const char ch);
 	void print(const char *str);
@@ -76,7 +73,7 @@ class VGA
 	void println();
 	void print(double number, int fractionalDigits, int minCharacters);
 	void println(double number, int fractionalDigits, int minCharacters);
-	
+
 	void xLineFast(int x0, int x1, int y, int rgb);
 	void line(int x1, int y1, int x2, int y2, int rgb);
 	void tri(int x1, int y1, int x2, int y2, int x3, int y3, int rgb);
@@ -90,19 +87,17 @@ class VGA
 	void ellipse(int x, int y, int rx, int ry, int rgb);
 	void fillEllipse(int x, int y, int rx, int ry, int rgb);
 	void mouse(int x1, int y1);
-	
+
 	void scrollText(int dy);
-	
+
 	void get(int x, int y);
-	
+
 	void dotAdd(int x, int y, int rgb);
-	
+
 	void scrollWindow(int x, int y, int w, int h, int dx, int dy);
-	
+
 	void scrollFastWindow(int dx, int dy);
-	
-	protected:
+
+protected:
 	void attachPinToSignal(int pin, int signal);
 };
-
-#endif

@@ -280,6 +280,19 @@ void VGA::dotdit(int x, int y, uint8_t r, uint8_t g, uint8_t b)
 	}
 }
 
+void VGA::drawTile(uint16_t orgX, uint16_t orgY, uint16_t *pixels)
+{
+	const uint16_t TILE_SIZE = 16;
+	for (uint16_t y = 0; y < TILE_SIZE; ++y)
+	{
+		auto p = dmaBuffer->getLineAddr16(orgY + y, 0);
+		for (uint16_t x = 0; x < TILE_SIZE; ++x)
+		{
+			p[orgX + x] = *(pixels++);
+		}
+	}
+}
+
 int VGA::rgb(uint8_t r, uint8_t g, uint8_t b)
 {
 	if (bits == 8)
@@ -791,7 +804,6 @@ void VGA::xLineFast(int x0, int x1, int y, int rgb)
 		x1 = xres;
 	for (int x = x0; x < x1; x++)
 	{
-
 		dotFast(x, y, rgb);
 	}
 }

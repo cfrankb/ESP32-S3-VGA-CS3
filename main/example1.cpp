@@ -18,7 +18,7 @@ int scale = 2;
 void delay(int ms)
 {
 	int _ms = ms + (portTICK_PERIOD_MS - 1);
-	TickType_t xTicksToDelay = _ms / portTICK_PERIOD_MS;
+	auto xTicksToDelay = _ms / portTICK_PERIOD_MS;
 	vTaskDelay(xTicksToDelay);
 }
 
