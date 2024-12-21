@@ -185,7 +185,6 @@ void CEngine::drawScreen(VGA *vga)
                 // special case animations
                 const int xx = monster.getX() - mx;
                 tiledata = reinterpret_cast<uint16_t *>(&animz_mcz) + (monster.getAim() * 8 + ANIMZ_INSECT1 + offset) * TILE_OFFSET;
-
                 if (y == 0)
                 {
                     draft.drawTile32(xx * TILE_SIZE, 0, tiledata);

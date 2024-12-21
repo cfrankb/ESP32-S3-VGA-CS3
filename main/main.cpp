@@ -68,13 +68,10 @@ void drawScreenTask(void *pvParameter)
 
 extern "C" void app_main(void)
 {
+    // const PinConfig pins(-1, -1, 6, 7, 8, -1, -1, -1, 12, 13, 14, -1, -1, -1, 18, 21, 1, 2); // R G B h v
+    const PinConfig pins(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 21, 1, 2); // R G B h v
 
-    const PinConfig pins(-1, -1, 6, 7, 8, -1, -1, -1, 12, 13, 14, -1, -1, -1, 18, 21, 1, 2); // R G B h v
-
-    //	Mode mode = Mode::MODE_640x480x60;
     Mode mode = Mode::MODE_320x240x60;
-
-    // if (!vga.init(pins, mode, 16, 3))
     if (!vga.init(pins, mode, 16, 4))
         while (1)
             delayMS(1);
