@@ -1,6 +1,6 @@
 # About
 
-This project is a game port to ESP-32 microcontroller of an MS-DOS Game.
+This project is a game port to ESP32S3 microcontroller of an MS-DOS Game.
 
 Current status is alpha. 90% of the core mechanic has been implemented.
 

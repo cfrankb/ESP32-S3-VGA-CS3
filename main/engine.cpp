@@ -62,6 +62,11 @@ void CEngine::drawLevelIntro(VGA *vga)
         sprintf(t, "LEVEL %.2d", m_game->level() + 1);
         break;
     case CGame::MODE_RESTART:
+        if (m_game->lives() == 1)
+        {
+            strcpy(t, "ONE LIFE LEFT");
+            break;
+        }
         sprintf(t, "LIVES LEFT %.2d", m_game->lives());
         break;
     case CGame::MODE_GAMEOVER:

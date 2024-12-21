@@ -1,6 +1,15 @@
+# Encoding
+
+Colors are encoded as unsigned 16bits integer (B5G6R5).
+
+The five (5) lowest bits are red and in accending order of brigtness. The next six (6) bits are green and the last five (5) bits are blue.
+
+
 # Hardware
 
 ## ESP32-S3
+
+Recommended ESP32S3 DevKit.
 
 https://vi.aliexpress.com/item/1005006418608267.html
 
@@ -11,14 +20,14 @@ https://www.aliexpress.com/item/1005004611997111.html
 
 ## VGA Adaptor
 
+An adaptor is needed to communicate with the VGA Hardware.
 
 https://vi.aliexpress.com/item/1005005279582020.html
 
 ![Image](images/20241221_100637-crop.jpg "icon")
 
 
-Create a resistor ladder
-Colors are stored as 16bits (B5G6R5)
+Create a resistor ladder wire as follow. Connect all the pins of the same color together.
 
 
 | GPIO Pin | Role  | Resistor | VGA Pin |
@@ -30,7 +39,7 @@ Colors are stored as 16bits (B5G6R5)
 | 6        | red   | 2k       |
 | 7        | red   | 1k       |
 | 8        | red   | 512R     |
-| 9        | green | 16k      | 2       |
+| 9        | green | 16k  *   | 2       |
 | 10       | green | 8k       |
 | 11       | green | 4k       |
 | 12       | green | 2k       |
@@ -43,13 +52,13 @@ Colors are stored as 16bits (B5G6R5)
 | 21       | blue  | 512R     |
 | GND      | -     | -        | 5, 10   |
 
+\* If you don't have any 16k Resistor. You can use a similar value such as 20k. The smallest resistor is the most significant and should be roughtly ~500R or higher.
 
 
 
 
 
-
-## Joystick
+# Joystick
 
 https://www.aliexpress.com/item/32345829014.html
 
