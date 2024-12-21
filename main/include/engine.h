@@ -22,6 +22,7 @@ public:
 
     enum
     {
+        FONT_SIZE = 8,
         TILE_SIZE = 16,
         PLAYER_FRAMES = 8,
         NO_ANIMZ = 255,

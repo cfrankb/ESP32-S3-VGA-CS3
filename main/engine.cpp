@@ -23,6 +23,7 @@ extern uint8_t annie_mcz;
 extern uint8_t levels_mapz;
 
 static const char *TAG = "engine";
+static CDraft draft(CONFIG_WIDTH, CEngine::TILE_SIZE);
 
 std::mutex g_mutex;
 CEngine *g_engine = nullptr;
@@ -73,13 +74,12 @@ void CEngine::drawLevelIntro(VGA *vga)
         strcpy(t, "GAME OVER");
     };
 
-    int x = (CONFIG_WIDTH - strlen(t) * 8) / 2;
-    int y = (CONFIG_HEIGHT - 8) / 2;
+    int x = (CONFIG_WIDTH - strlen(t) * FONT_SIZE) / 2;
+    int y = (CONFIG_HEIGHT - FONT_SIZE) / 2;
     vga->clear(0);
-    vga->setCursor(x, y);
-    vga->setTextColor(WHITE, BLACK);
-    vga->print(t);
-    //    display.drawFont(x, y, t, WHITE);
+    draft.fill(0);
+    draft.drawFont(x, 0, t, WHITE);
+    vga->drawBuffer(0, y, draft.buf(), draft.width(), FONT_SIZE);
     ESP_LOGI(TAG, "End - Draw Level Intro");
 }
 
@@ -102,8 +102,6 @@ void CEngine::drawKeys(const CDraft &display, const int y)
 void CEngine::drawScreen(VGA *vga)
 {
     // ESP_LOGI(TAG, "Starting drawscreen");
-    static CDraft draft(CONFIG_WIDTH, TILE_SIZE);
-
     std::lock_guard<std::mutex> lk(g_mutex);
     CMap &map = m_game->getMap();
     CActor &player = m_game->player();
@@ -206,11 +204,11 @@ void CEngine::drawScreen(VGA *vga)
 
             bx += strlen(tmp);
             sprintf(tmp, "DIAMONDS %.2d ", m_game->diamonds());
-            draft.drawFont(bx * 8, offsetY, tmp, YELLOW);
+            draft.drawFont(bx * FONT_SIZE, offsetY, tmp, YELLOW);
 
             bx += strlen(tmp);
             sprintf(tmp, "LIVES %.2d ", m_game->lives());
-            draft.drawFont(bx * 8, offsetY, tmp, PURPLE);
+            draft.drawFont(bx * FONT_SIZE, offsetY, tmp, PURPLE);
 
             vga->drawBuffer(0, 0, draft.buf(), draft.width(), draft.height());
         }

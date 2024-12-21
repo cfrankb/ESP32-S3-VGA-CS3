@@ -5,7 +5,6 @@
 #include <cstring>
 #include <cstdio>
 #include <algorithm>
-// #include "driver/gpio.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/timers.h"
@@ -19,7 +18,6 @@
 #include "engine.h"
 #include "conf.h"
 #include "VGA.h"
-#include <FONT_8x8.h>
 
 static const char *TAG = "main";
 CEngine *engine = nullptr;
@@ -37,18 +35,12 @@ void drawScreenTask(void *pvParameter)
     CGame &game = engine->game();
     while (1)
     {
-        // ESP_LOGI(TAG, "Waiting on VSync");
-        //        vga.vsyncWait();
-        //      auto buf = vga.getDrawBuffer();
         switch (game.mode())
         {
         case CGame::MODE_INTRO:
         case CGame::MODE_RESTART:
         case CGame::MODE_GAMEOVER:
             engine->drawLevelIntro(&vga);
-            //         vga.vsyncWait();
-            //  buf = vga.getDrawBuffer();
-            // engine->drawLevelIntro(buf);
             delayMS(2000);
             if (game.mode() == CGame::MODE_GAMEOVER)
             {
@@ -80,12 +72,9 @@ extern "C" void app_main(void)
     {
         ESP_LOGE(TAG, "vga start failed");
     }
-    vga.setFont(FONT_8x8);
 
-    // vga_8bits_test();
     delayMS(10);
     ESP_LOGI(TAG, "Initializing VGA driver");
-    // vga.initWithSize(CONFIG_WIDTH, CONFIG_HEIGHT, 8);
 
     ESP_LOGI(TAG, "Free bytes: %ld", esp_get_free_heap_size());
 
@@ -101,7 +90,6 @@ extern "C" void app_main(void)
     game.loadLevel(false);
     delayMS(500);
     engine->mutex().unlock();
-    // vga_8bits_test(vga);
 
     ESP_LOGI(TAG, "Free bytes: %ld", esp_get_free_heap_size());
 
