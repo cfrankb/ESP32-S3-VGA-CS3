@@ -7,7 +7,7 @@
 #include "game.h"
 #include "colors.h"
 #include "esphelpers.h"
-#include "display.h"
+#include "draft.h"
 #include "tileset.h"
 #include "tilesdata.h"
 #include "joystick.h"
@@ -15,7 +15,6 @@
 #include "maparch.h"
 #include "animator.h"
 #include "conf.h"
-// #include "display.h"
 #include "VGA.h"
 
 extern uint8_t tiles_mcz;
@@ -57,11 +56,9 @@ CGame &CEngine::game()
     return *m_game;
 }
 
-void CEngine::drawLevelIntro(uint8_t *buf)
+void CEngine::drawLevelIntro(VGA *vga)
 {
     ESP_LOGI(TAG, "Start - Draw Level Intro");
-
-    CDisplay display(buf, CONFIG_WIDTH, CONFIG_HEIGHT);
 
     char t[32];
     switch (m_game->mode())
@@ -78,12 +75,15 @@ void CEngine::drawLevelIntro(uint8_t *buf)
 
     int x = (CONFIG_WIDTH - strlen(t) * 8) / 2;
     int y = (CONFIG_HEIGHT - 8) / 2;
-    display.fill(BLACK);
-    display.drawFont(x, y, t, WHITE);
+    vga->clear(0);
+    vga->setCursor(x, y);
+    vga->setTextColor(WHITE, BLACK);
+    vga->print(t);
+    //    display.drawFont(x, y, t, WHITE);
     ESP_LOGI(TAG, "End - Draw Level Intro");
 }
 
-void CEngine::drawKeys(const CDisplay &display, const int y)
+void CEngine::drawKeys(const CDraft &display, const int y)
 {
     CGame &game = *m_game;
     int x = CONFIG_WIDTH - TILE_SIZE;
@@ -93,7 +93,7 @@ void CEngine::drawKeys(const CDisplay &display, const int y)
         uint8_t k = keys[i];
         if (k)
         {
-            display.drawTile(x, y, &tiles_mcz, true);
+            display.drawTile(x, y, reinterpret_cast<uint16_t *>(&tiles_mcz), true);
             x -= TILE_SIZE;
         }
     }
@@ -102,7 +102,7 @@ void CEngine::drawKeys(const CDisplay &display, const int y)
 void CEngine::drawScreen(VGA *vga)
 {
     // ESP_LOGI(TAG, "Starting drawscreen");
-    // CDisplay display(buf, CONFIG_WIDTH, CONFIG_HEIGHT);
+    static CDraft draft(CONFIG_WIDTH, TILE_SIZE);
 
     std::lock_guard<std::mutex> lk(g_mutex);
     CMap &map = m_game->getMap();
@@ -122,6 +122,25 @@ void CEngine::drawScreen(VGA *vga)
     uint16_t *tiledata;
     for (int y = 0; y < rows; ++y)
     {
+        if (y == rows - 1)
+        {
+            // draw bottom rect
+            draft.drawRect(
+                Rect{.x = 0, .y = 0, .width = CONFIG_WIDTH, .height = TILE_SIZE}, GRAY, true);
+            draft.drawRect(
+                Rect{.x = 0, .y = 0, .width = CONFIG_WIDTH, .height = TILE_SIZE}, LIGHTGRAY, false);
+
+            // draw health bar
+            draft.drawRect(
+                Rect{.x = 4, .y = 4, .width = std::min(m_game->health() / 2, CONFIG_WIDTH - 4), .height = TILE_SIZE / 2}, LIME, true);
+            draft.drawRect(
+                Rect{.x = 4, .y = 4, .width = std::min(m_game->health() / 2, CONFIG_WIDTH - 4), .height = TILE_SIZE / 2}, WHITE, false);
+
+            drawKeys(draft, 0 * TILE_SIZE);
+            vga->drawBuffer(0, y * TILE_SIZE, draft.buf(), draft.width(), draft.height());
+            continue;
+        }
+
         for (int x = 0; x < cols; ++x)
         {
             int j;
@@ -142,9 +161,14 @@ void CEngine::drawScreen(VGA *vga)
                                ? reinterpret_cast<uint16_t *>(&tiles_mcz) + i * TILE_OFFSET
                                : reinterpret_cast<uint16_t *>(&animz_mcz) + j * TILE_OFFSET;
             }
-            // ESP_LOGI(TAG, "%d %d %p %p", i, j, &tiles_mcz, tiledata);
-            vga->drawTile(x * TILE_SIZE, y * TILE_SIZE, tiledata);
-            // display.drawTile32(x * TILE_SIZE, y * TILE_SIZE, tiledata);
+            if (y == 0)
+            {
+                draft.drawTile32(x * TILE_SIZE, 0, tiledata);
+            }
+            else
+            {
+                vga->drawTile(x * TILE_SIZE, y * TILE_SIZE, tiledata);
+            }
         }
 
         const int offset = m_animator->offset() & 7;
@@ -162,8 +186,14 @@ void CEngine::drawScreen(VGA *vga)
                 const int xx = monster.getX() - mx;
                 tiledata = reinterpret_cast<uint16_t *>(&animz_mcz) + (monster.getAim() * 8 + ANIMZ_INSECT1 + offset) * TILE_OFFSET;
 
-                // display.drawTile32(xx * TILE_SIZE, y * TILE_SIZE, tiledata);
-                vga->drawTile(xx * TILE_SIZE, y * TILE_SIZE, tiledata);
+                if (y == 0)
+                {
+                    draft.drawTile32(xx * TILE_SIZE, 0, tiledata);
+                }
+                else
+                {
+                    vga->drawTile(xx * TILE_SIZE, y * TILE_SIZE, tiledata);
+                }
             }
         }
 
@@ -173,42 +203,17 @@ void CEngine::drawScreen(VGA *vga)
             int bx = 0;
             int offsetY = 0;
             sprintf(tmp, "%.8d ", m_game->score());
-            // display.drawFont(0, offsetY, tmp, WHITE);
-            vga->setCursor(0, offsetY);
-            vga->setTextColor(WHITE, BLACK);
-            vga->print(tmp);
+            draft.drawFont(0, offsetY, tmp, WHITE);
 
             bx += strlen(tmp);
             sprintf(tmp, "DIAMONDS %.2d ", m_game->diamonds());
-            // display.drawFont(bx * 8, offsetY, tmp, YELLOW);
-            vga->setCursor(bx * 8, offsetY);
-            vga->setTextColor(YELLOW, BLACK);
-            vga->print(tmp);
+            draft.drawFont(bx * 8, offsetY, tmp, YELLOW);
 
             bx += strlen(tmp);
             sprintf(tmp, "LIVES %.2d ", m_game->lives());
-            // display.drawFont(bx * 8, offsetY, tmp, PURPLE);
-            vga->setCursor(bx * 8, offsetY);
-            vga->setTextColor(PURPLE, BLACK);
-            vga->print(tmp);
-        }
-        else if (y == rows - 1)
-        {
-            /*
-            // draw bottom rect
-            display.drawRect(
-                Rect{.x = 0, .y = y * TILE_SIZE, .width = CONFIG_WIDTH, .height = TILE_SIZE}, GRAY, true);
-            display.drawRect(
-                Rect{.x = 0, .y = y * TILE_SIZE, .width = CONFIG_WIDTH, .height = TILE_SIZE}, LIGHTGRAY, false);
+            draft.drawFont(bx * 8, offsetY, tmp, PURPLE);
 
-            // draw health bar
-            display.drawRect(
-                Rect{.x = 4, .y = y * TILE_SIZE + 4, .width = std::min(m_game->health() / 2, CONFIG_WIDTH - 4), .height = TILE_SIZE / 2}, LIME, true);
-            display.drawRect(
-                Rect{.x = 4, .y = y * TILE_SIZE + 4, .width = std::min(m_game->health() / 2, CONFIG_WIDTH - 4), .height = TILE_SIZE / 2}, WHITE, false);
-
-            drawKeys(display, y * TILE_SIZE);
-            */
+            vga->drawBuffer(0, 0, draft.buf(), draft.width(), draft.height());
         }
     }
 }

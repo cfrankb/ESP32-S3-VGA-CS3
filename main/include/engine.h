@@ -1,11 +1,10 @@
-#ifndef _engine__h
-#define _engine__h
+#pragma once
 
 #include <mutex>
 
 class CGame;
 class CAnimator;
-class CDisplay;
+class CDraft;
 
 class VGA;
 
@@ -17,8 +16,8 @@ public:
 
     std::mutex &mutex();
     CGame &game();
-    void drawScreen(VGA *vga); // uint8_t *buf);
-    void drawLevelIntro(uint8_t *buf);
+    void drawScreen(VGA *vga);
+    void drawLevelIntro(VGA *vga);
     void mainLoop(int ticks);
 
     enum
@@ -36,7 +35,5 @@ protected:
     int m_healthRef = 0;
     CGame *m_game = nullptr;
     bool init();
-    void drawKeys(const CDisplay &display, const int y);
+    void drawKeys(const CDraft &display, const int y);
 };
-
-#endif

@@ -293,6 +293,18 @@ void VGA::drawTile(uint16_t orgX, uint16_t orgY, uint16_t *pixels)
 	}
 }
 
+void VGA::drawBuffer(uint16_t orgX, uint16_t orgY, uint16_t *pixels, int len, int hei)
+{
+	for (int y = 0; y < hei; ++y)
+	{
+		auto p = dmaBuffer->getLineAddr16(orgY + y, 0);
+		for (int x = 0; x < len; ++x)
+		{
+			p[orgX + x] = *(pixels++);
+		}
+	}
+}
+
 int VGA::rgb(uint8_t r, uint8_t g, uint8_t b)
 {
 	if (bits == 8)

@@ -11,7 +11,6 @@
 #include "freertos/timers.h"
 #include "esp_system.h"
 #include "tileset.h"
-#include "display.h"
 // #include "joystick.h"
 #include "map.h"
 #include "level.h"
@@ -46,12 +45,11 @@ void drawScreenTask(void *pvParameter)
         case CGame::MODE_INTRO:
         case CGame::MODE_RESTART:
         case CGame::MODE_GAMEOVER:
-            vga.clear(0);
-            // engine->drawLevelIntro(buf);
+            engine->drawLevelIntro(&vga);
             //         vga.vsyncWait();
             //  buf = vga.getDrawBuffer();
             // engine->drawLevelIntro(buf);
-            delayMS(1000);
+            delayMS(2000);
             if (game.mode() == CGame::MODE_GAMEOVER)
             {
                 game.restartGame();

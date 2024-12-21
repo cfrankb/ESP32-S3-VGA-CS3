@@ -45,6 +45,7 @@ public:
 	void dotFast8(int x, int y, int rgb);
 	int rgb(uint8_t r, uint8_t g, uint8_t b);
 	void drawTile(uint16_t orgX, uint16_t orgY, uint16_t *pixels);
+	void drawBuffer(uint16_t orgX, uint16_t orgY, uint16_t *pixels, int len, int hei);
 
 	void setTextColor(uint16_t front, uint16_t back);
 	void setFont(Font &font);

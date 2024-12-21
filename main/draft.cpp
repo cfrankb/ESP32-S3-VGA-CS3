@@ -1,22 +1,22 @@
-#include "display.h"
+#include "draft.h"
 #include <algorithm>
 #include <esp_log.h>
 
 extern uint8_t bitfont_bin;
-static const char TAG[]{"display"};
+static const char TAG[]{"draft"};
 
-CDisplay::CDisplay(uint8_t *buf, int width, int height)
+CDraft::CDraft(int width, int height)
 {
     // ESP_LOGI(TAG, "Building Display Wrapper");
-    m_buf = buf;
+    m_buf = new uint16_t[width * height];
     m_width = width;
     m_height = height;
 };
 
-void CDisplay::drawTile32(uint16_t x, uint16_t y, uint8_t *tile) const
+void CDraft::drawTile32(uint16_t x, uint16_t y, uint16_t *tile) const
 {
     // ESP_LOGI(TAG, "Drawing tile at: %d %d %p", x, y, tile);
-    uint8_t *o = m_buf + x + y * m_width;
+    uint16_t *o = m_buf + x + y * m_width;
     uint32_t *p32 = reinterpret_cast<uint32_t *>(tile);
     for (int yy = 0; yy < 16; ++yy)
     {
@@ -25,15 +25,19 @@ void CDisplay::drawTile32(uint16_t x, uint16_t y, uint8_t *tile) const
         d32[1] = p32[1];
         d32[2] = p32[2];
         d32[3] = p32[3];
+        d32[4] = p32[4];
+        d32[5] = p32[5];
+        d32[6] = p32[6];
+        d32[7] = p32[7];
         o += m_width;
-        p32 += 4;
+        p32 += 8;
     }
 }
 
-void CDisplay::drawTile(uint16_t x, uint16_t y, uint8_t *tile, bool alpha) const
+void CDraft::drawTile(uint16_t x, uint16_t y, uint16_t *tile, bool alpha) const
 {
     // ESP_LOGI(TAG, "Drawing tile at: %d %d %p", x, y, tile);
-    uint8_t *d = m_buf + x + y * m_width;
+    uint16_t *d = m_buf + x + y * m_width;
     int i = 0;
     for (int yy = 0; yy < 16; ++yy)
     {
@@ -44,7 +48,7 @@ void CDisplay::drawTile(uint16_t x, uint16_t y, uint8_t *tile, bool alpha) const
     }
 }
 
-void CDisplay::fill(const uint8_t color) const
+void CDraft::fill(const uint16_t color) const
 {
     ESP_LOGI(TAG, "Display Fill Display %d x %d", m_width, m_height);
     assert(m_buf != nullptr);
@@ -54,14 +58,14 @@ void CDisplay::fill(const uint8_t color) const
     }
 }
 
-void CDisplay::drawFont(const int x, const int y, const char *s, uint8_t color) const
+void CDraft::drawFont(const int x, const int y, const char *s, uint16_t color) const
 {
     // ESP_LOGI(TAG, "Display Draw Font at (%d,%d): %s", x, y, s);
     uint8_t *font = &bitfont_bin;
     for (int j = 0; s[j]; ++j)
     {
         int u = s[j] < 127 ? std::max(s[j] - 32, 0) : 0;
-        uint8_t *o = m_buf + x + y * m_width + 8 * j;
+        uint16_t *o = m_buf + x + y * m_width + 8 * j;
         for (int yy = 0; yy < 8; ++yy)
         {
             uint8_t data = font[8 * u + yy];
@@ -75,9 +79,9 @@ void CDisplay::drawFont(const int x, const int y, const char *s, uint8_t color) 
     }
 }
 
-void CDisplay::drawRect(const Rect &rect, const uint8_t color, const bool fill) const
+void CDraft::drawRect(const Rect &rect, const uint16_t color, const bool fill) const
 {
-    uint8_t *buf = m_buf + rect.x + rect.y * m_width;
+    uint16_t *buf = m_buf + rect.x + rect.y * m_width;
     if (fill)
     {
         for (int y = 0; y < rect.height; ++y)

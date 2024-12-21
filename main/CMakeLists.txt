@@ -5,7 +5,7 @@ idf_component_register(
     "actor.cpp"
     "animator.cpp"
     "colors.cpp"
-    "display.cpp"
+    "draft.cpp"
     "engine.cpp"
     "font.cpp"
     "game.cpp"
