@@ -285,10 +285,10 @@ void VGA::drawTile(uint16_t orgX, uint16_t orgY, uint16_t *pixels)
 	const uint16_t TILE_SIZE = 16;
 	for (uint16_t y = 0; y < TILE_SIZE; ++y)
 	{
-		auto p = dmaBuffer->getLineAddr16(orgY + y, 0);
+		auto p = &dmaBuffer->getLineAddr16(orgY + y, 0)[orgX];
 		for (uint16_t x = 0; x < TILE_SIZE; ++x)
 		{
-			p[orgX + x] = *(pixels++);
+			p[x] = *(pixels++);
 		}
 	}
 }

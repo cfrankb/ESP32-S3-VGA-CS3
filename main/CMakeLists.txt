@@ -13,8 +13,9 @@ idf_component_register(
     "maparch.cpp"
     "tilesdata.cpp"
     "data.s"
+    "joystick.cpp"
     #"example1.cpp"
     INCLUDE_DIRS "."
     INCLUDE_DIRS "./include"
-    REQUIRES esp32s3vga)
+    REQUIRES esp32s3vga esp_adc driver)
 

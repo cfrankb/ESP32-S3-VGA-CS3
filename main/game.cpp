@@ -319,7 +319,7 @@ void CGame::manageMonsters(int ticks)
     }
 }
 
-void CGame::managePlayer()
+void CGame::managePlayer(const uint16_t joyState)
 {
     m_godModeTimer = m_godModeTimer > 0 ? m_godModeTimer - 1 : 0;
     m_extraSpeedTimer = m_extraSpeedTimer > 0 ? m_extraSpeedTimer - 1 : 0;
@@ -331,15 +331,13 @@ void CGame::managePlayer()
         addHealth(def.health);
     }
 
-    uint16_t joy = 0; // readJoystick();
-
     // move player
     uint8_t mask = 1;
     uint8_t aims[] = {AIM_UP, AIM_DOWN, AIM_LEFT, AIM_RIGHT};
     for (uint8_t i = 0; i < AIM_COUNT; ++i)
     {
         uint8_t aim = aims[i];
-        if ((joy & mask) && move(aim))
+        if ((joyState & mask) && move(aim))
         {
             break;
         }

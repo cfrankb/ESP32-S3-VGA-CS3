@@ -16,7 +16,7 @@ public:
     bool loadLevel(bool restart);
     bool move(int dir);
     void manageMonsters(int ticks);
-    void managePlayer();
+    void managePlayer(const uint16_t joyState);
     static Pos translate(const Pos &p, int aim);
     void consume();
     static bool hasKey(uint8_t c);

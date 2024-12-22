@@ -9,8 +9,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/timers.h"
-// #include "esp_system.h"
-// #include "joystick.h"
+#include "joystick.h"
 #include "map.h"
 #include "level.h"
 #include "tilesdata.h"
@@ -60,8 +59,8 @@ void drawScreenTask(void *pvParameter)
 
 extern "C" void app_main(void)
 {
-    // const PinConfig pins(-1, -1, 6, 7, 8, -1, -1, -1, 12, 13, 14, -1, -1, -1, 18, 21, 1, 2); // R G B h v
     const PinConfig pins(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 21, 1, 2); // R G B h v
+    delayMS(100);
 
     Mode mode = Mode::MODE_320x240x60;
     if (!vga.init(pins, mode, 16, 4))
@@ -88,18 +87,21 @@ extern "C" void app_main(void)
 
     engine->mutex().lock();
     game.loadLevel(false);
-    delayMS(500);
+    delayMS(2000);
     engine->mutex().unlock();
 
     ESP_LOGI(TAG, "Free bytes: %ld", esp_get_free_heap_size());
 
     int ticks = 0;
 
+    // GPIO_NUM_0
+    CGameController gamepad(GPIO_NUM_38, GPIO_NUM_35, GPIO_NUM_47, GPIO_NUM_48);
+    engine->attach(&gamepad);
+
     ESP_LOGI(TAG, "Starting main loop");
     while (1)
     {
         delayMS(40);
-
         engine->mainLoop(ticks);
         if (game.isPlayerDead())
         {

@@ -5,6 +5,7 @@
 class CGame;
 class CAnimator;
 class CDraft;
+class IJoystick;
 
 class VGA;
 
@@ -18,7 +19,8 @@ public:
     CGame &game();
     void drawScreen(VGA *vga);
     void drawLevelIntro(VGA *vga);
-    void mainLoop(int ticks);
+    void mainLoop(const int ticks);
+    void attach(IJoystick *gamepad);
 
     enum
     {
@@ -34,6 +36,7 @@ protected:
     CAnimator *m_animator = nullptr;
     int m_playerFrameOffset = 0;
     int m_healthRef = 0;
+    IJoystick *m_gamepad = nullptr;
     CGame *m_game = nullptr;
     bool init();
     void drawKeys(const CDraft &display, const int y);

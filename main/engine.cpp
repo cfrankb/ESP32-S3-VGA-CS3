@@ -75,8 +75,8 @@ void CEngine::drawLevelIntro(VGA *vga)
 
     int x = (CONFIG_WIDTH - strlen(t) * FONT_SIZE) / 2;
     int y = (CONFIG_HEIGHT - FONT_SIZE) / 2;
-    vga->clear(0);
-    draft.fill(0);
+    vga->clear(BLACK);
+    draft.fill(BLACK);
     draft.drawFont(x, 0, t, WHITE);
     vga->drawBuffer(0, y, draft.buf(), draft.width(), FONT_SIZE);
     ESP_LOGI(TAG, "End - Draw Level Intro");
@@ -92,7 +92,7 @@ void CEngine::drawKeys(const CDraft &display, const int y)
         uint8_t k = keys[i];
         if (k)
         {
-            display.drawTile(x, y, reinterpret_cast<uint16_t *>(&tiles_mcz), true);
+            display.drawTile(x, y, reinterpret_cast<uint16_t *>(&tiles_mcz) + k * TILE_OFFSET, true);
             x -= TILE_SIZE;
         }
     }
@@ -217,7 +217,6 @@ void CEngine::drawScreen(VGA *vga)
 bool CEngine::init()
 {
     m_game = new CGame();
-    // initJoystick();
     m_animator = new CAnimator();
     return m_game->loadMapIndex();
 }
@@ -227,28 +226,28 @@ std::mutex &CEngine::mutex()
     return g_mutex;
 }
 
-void CEngine::mainLoop(int ticks)
+void CEngine::mainLoop(const int ticks)
 {
     CGame &game = *m_game;
-
     if (game.mode() != CGame::MODE_LEVEL)
     {
         return;
     }
 
+    const uint16_t joyState = m_gamepad ? m_gamepad->read() : 0; // readJoystick();
     if (ticks % 3 == 0 && !game.isPlayerDead())
     {
-        game.managePlayer();
+        game.managePlayer(joyState);
     }
 
-    uint16_t joy = 0; // readJoystick();
     if (ticks % 3 == 0)
     {
+        // ESP_LOGI(TAG, "joyState 0x%.4x", joyState);
         if (game.health() < m_healthRef && m_playerFrameOffset != 7)
         {
             m_playerFrameOffset = 7;
         }
-        else if (joy)
+        else if (joyState)
         {
             m_playerFrameOffset = (m_playerFrameOffset + 1) % 7;
         }
@@ -272,4 +271,9 @@ void CEngine::mainLoop(int ticks)
             mutex().unlock();
         }
     }
+}
+
+void CEngine::attach(IJoystick *gamepad)
+{
+    m_gamepad = gamepad;
 }
