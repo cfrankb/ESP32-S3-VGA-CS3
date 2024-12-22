@@ -53,7 +53,7 @@ CGame &CEngine::game()
 
 void CEngine::drawLevelIntro(VGA *vga)
 {
-    ESP_LOGI(TAG, "Start - Draw Level Intro");
+    ESP_LOGI(TAG, "Draw Level Intro");
 
     char t[32];
     switch (m_game->mode())
@@ -79,7 +79,6 @@ void CEngine::drawLevelIntro(VGA *vga)
     draft.fill(BLACK);
     draft.drawFont(x, 0, t, WHITE);
     vga->drawBuffer(0, y, draft.buf(), draft.width(), FONT_SIZE);
-    ESP_LOGI(TAG, "End - Draw Level Intro");
 }
 
 void CEngine::drawKeys(const CDraft &display, const int y)

@@ -43,7 +43,11 @@ void CDraft::drawTile(uint16_t x, uint16_t y, uint16_t *tile, bool alpha) const
     {
         for (int xx = 0; xx < 16; ++xx)
         {
-            d[xx + yy * m_width] = tile[i++];
+            const auto pixel = tile[i++];
+            if (pixel || !alpha)
+            {
+                d[xx + yy * m_width] = pixel;
+            }
         }
     }
 }

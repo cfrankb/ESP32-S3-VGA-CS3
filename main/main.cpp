@@ -62,6 +62,8 @@ extern "C" void app_main(void)
     const PinConfig pins(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 21, 1, 2); // R G B h v
     delayMS(100);
 
+    ESP_LOGI(TAG, "Free bytes: %ld", esp_get_free_heap_size());
+
     Mode mode = Mode::MODE_320x240x60;
     if (!vga.init(pins, mode, 16, 4))
         while (1)
@@ -74,8 +76,6 @@ extern "C" void app_main(void)
 
     delayMS(10);
     ESP_LOGI(TAG, "Initializing VGA driver");
-
-    ESP_LOGI(TAG, "Free bytes: %ld", esp_get_free_heap_size());
 
     engine = CEngine::getEngine();
     CGame &game = engine->game();
@@ -94,7 +94,7 @@ extern "C" void app_main(void)
 
     int ticks = 0;
 
-    // GPIO_NUM_0
+    // add game controller
     CGameController gamepad(GPIO_NUM_38, GPIO_NUM_35, GPIO_NUM_47, GPIO_NUM_48);
     engine->attach(&gamepad);
 

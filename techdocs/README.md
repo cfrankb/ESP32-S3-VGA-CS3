@@ -60,16 +60,21 @@ Create a resistor ladder wire as follow. Connect all the pins of the same color 
 
 # Joystick
 
-https://www.aliexpress.com/item/32345829014.html
+![Image](images/20241222_072413-crop.jpg "icon")
 
-| JOYSTICK | wirecolor | GPIO Pin |
-| -------- | --------- | -------- |
-| VRX      | brown     | 35       |
-| VRY      | white     | 34       |
-| SW       | blue      | 26       |
-| GRN      | black     | GRN      |
-| VCC      | red       | 3.3v     |
 
-The above configuration is for the ESP32S3.
-Pin out will vary per model. Check log output.
+
+| JOYSTICK | GPIO Pin |
+| -------- | -------- |
+| UP       | 38       |
+| DOWN     | 35       |
+| LEFT     | 47       |
+| RIGHT    | 48       |
+
+```
+CGameController gamepad(GPIO_NUM_38, GPIO_NUM_35, GPIO_NUM_47, GPIO_NUM_48);
+engine->attach(&gamepad);
+```
+
+The above configuration is for the ESP32S3. Pin out will vary per model. Check log output.
 
