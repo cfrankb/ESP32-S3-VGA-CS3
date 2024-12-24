@@ -31,8 +31,7 @@ protected:
     };
 
 public:
-    virtual uint16_t
-    read() = 0;
+    virtual uint16_t read() = 0;
 };
 
 class CGameController : public IJoystick

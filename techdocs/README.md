@@ -58,23 +58,23 @@ Create a resistor ladder wire as follow. Connect all the pins of the same color 
 
 
 
-# Joystick
+# Gamepad
 
 ![Image](images/20241222_072413-crop.jpg "icon")
 
 
 
-| JOYSTICK | GPIO Pin |
-| -------- | -------- |
-| UP       | 38       |
-| DOWN     | 35       |
-| LEFT     | 47       |
-| RIGHT    | 48       |
+| Aim   | GPIO Pin |
+| ----- | -------- |
+| UP    | 38       |
+| DOWN  | 35       |
+| LEFT  | 47       |
+| RIGHT | 48       |
 
 ```
 CGameController gamepad(GPIO_NUM_38, GPIO_NUM_35, GPIO_NUM_47, GPIO_NUM_48);
 engine->attach(&gamepad);
 ```
 
-The above configuration is for the ESP32S3. Pin out will vary per model. Check log output.
+The above configuration is for the ESP32S3. Pin out will vary per model.
 

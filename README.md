@@ -12,6 +12,8 @@ Current status is alpha. 90% of the core mechanic has been implemented.
 
 ![Image](techdocs/images/20241221_100753-crop.jpg "icon")
 
+Gameplay: https://www.youtube.com/watch?v=SPQwWkzFRpU
+
 I am also releasing the source code for the map editor:
 https://github.com/cfrankb/cs3-map-edit
 
@@ -27,8 +29,8 @@ esp-idf v5.3 or later.
 This project is based in part on: https://github.com/spikepavel/ESP32-S3-VGA
 
 ```Shell
-git clone https://github.com/cfrankb/ESP32-S3-VGA-TEST.git
-cd ESP32-S3-VGA-TEST/
+git clone https://github.com/cfrankb/ESP32-S3-VGA-CS3.git
+cd ESP32-S3-VGA-CS3/
 idf.py set-target esp32s3
 idf.py menuconfig
 idf.py flash
