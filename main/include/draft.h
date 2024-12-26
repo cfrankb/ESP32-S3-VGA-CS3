@@ -28,4 +28,10 @@ protected:
     uint16_t *m_buf = nullptr;
     int m_width;
     int m_height;
+    enum
+    {
+        TILE_SIZE = 16,
+        FONT_SIZE = 8,
+        FONT_OFFSET = 8
+    };
 };

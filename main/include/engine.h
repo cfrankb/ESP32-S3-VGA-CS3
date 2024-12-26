@@ -27,6 +27,8 @@ public:
         FONT_SIZE = 8,
         TILE_SIZE = 16,
         PLAYER_FRAMES = 8,
+        PLAYER_REG_FRAMES = 7,
+        PLAYER_SPEED = 3,
         NO_ANIMZ = 255,
         TILE_OFFSET = TILE_SIZE * TILE_SIZE,
     };

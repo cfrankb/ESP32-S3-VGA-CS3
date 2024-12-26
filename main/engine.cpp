@@ -86,7 +86,7 @@ void CEngine::drawKeys(const CDraft &display, const int y)
     CGame &game = *m_game;
     int x = CONFIG_WIDTH - TILE_SIZE;
     const uint8_t *keys = game.keys();
-    for (int i = 0; i < 6; ++i)
+    for (int i = 0; i < CGame::MAX_KEYS; ++i)
     {
         uint8_t k = keys[i];
         if (k)
@@ -143,7 +143,7 @@ void CEngine::drawScreen(VGA *vga)
             int i = y + my >= map.hei() ? TILES_BLANK : map.at(x + mx, y + my);
             if (i == TILES_ANNIE2)
             {
-                int frame = player.getAim() * PLAYER_FRAMES + m_playerFrameOffset;
+                const int frame = player.getAim() * PLAYER_FRAMES + m_playerFrameOffset;
                 tiledata = reinterpret_cast<uint16_t *>(&annie_mcz) + TILE_OFFSET * frame;
             }
             else
@@ -234,21 +234,21 @@ void CEngine::mainLoop(const int ticks)
     }
 
     const uint16_t joyState = m_gamepad ? m_gamepad->read() : 0; // readJoystick();
-    if (ticks % 3 == 0 && !game.isPlayerDead())
+    if (ticks % PLAYER_SPEED == 0 && !game.isPlayerDead())
     {
         game.managePlayer(joyState);
     }
 
-    if (ticks % 3 == 0)
+    if (ticks % PLAYER_SPEED == 0)
     {
         // ESP_LOGI(TAG, "joyState 0x%.4x", joyState);
-        if (game.health() < m_healthRef && m_playerFrameOffset != 7)
+        if (game.health() < m_healthRef && m_playerFrameOffset != PLAYER_REG_FRAMES)
         {
-            m_playerFrameOffset = 7;
+            m_playerFrameOffset = PLAYER_REG_FRAMES;
         }
         else if (joyState)
         {
-            m_playerFrameOffset = (m_playerFrameOffset + 1) % 7;
+            m_playerFrameOffset = (m_playerFrameOffset + 1) % PLAYER_REG_FRAMES;
         }
         else
         {

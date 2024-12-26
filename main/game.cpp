@@ -2,7 +2,6 @@
 #include <string>
 #include "game.h"
 #include "map.h"
-// #include "joystick.h"
 #include "level.h"
 #include "actor.h"
 #include "data.h"
@@ -10,7 +9,7 @@
 #include "tilesdata.h"
 
 CMap map(30, 30);
-uint8_t CGame::m_keys[6];
+uint8_t CGame::m_keys[MAX_KEYS];
 
 CGame::CGame()
 {

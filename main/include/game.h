@@ -61,6 +61,7 @@ public:
         EXTRASPEED_TIMER = 200,
         DEFAULT_PLAYER_SPEED = 3,
         FAST_PLAYER_SPEED = 2,
+        MAX_KEYS = 6,
     };
 
 protected:

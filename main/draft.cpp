@@ -18,7 +18,7 @@ void CDraft::drawTile32(uint16_t x, uint16_t y, uint16_t *tile) const
     // ESP_LOGI(TAG, "Drawing tile at: %d %d %p", x, y, tile);
     uint16_t *o = m_buf + x + y * m_width;
     uint32_t *p32 = reinterpret_cast<uint32_t *>(tile);
-    for (int yy = 0; yy < 16; ++yy)
+    for (int yy = 0; yy < TILE_SIZE; ++yy)
     {
         uint32_t *d32 = reinterpret_cast<uint32_t *>(o);
         d32[0] = p32[0];
@@ -39,9 +39,9 @@ void CDraft::drawTile(uint16_t x, uint16_t y, uint16_t *tile, bool alpha) const
     // ESP_LOGI(TAG, "Drawing tile at: %d %d %p", x, y, tile);
     uint16_t *d = m_buf + x + y * m_width;
     int i = 0;
-    for (int yy = 0; yy < 16; ++yy)
+    for (int yy = 0; yy < TILE_SIZE; ++yy)
     {
-        for (int xx = 0; xx < 16; ++xx)
+        for (int xx = 0; xx < TILE_SIZE; ++xx)
         {
             const auto pixel = tile[i++];
             if (pixel || !alpha)
@@ -69,11 +69,11 @@ void CDraft::drawFont(const int x, const int y, const char *s, uint16_t color) c
     for (int j = 0; s[j]; ++j)
     {
         int u = s[j] < 127 ? std::max(s[j] - ' ', 0) : 0;
-        uint16_t *o = m_buf + x + y * m_width + 8 * j;
-        for (int yy = 0; yy < 8; ++yy)
+        uint16_t *o = m_buf + x + y * m_width + FONT_SIZE * j;
+        for (int yy = 0; yy < FONT_SIZE; ++yy)
         {
-            uint8_t data = font[8 * u + yy];
-            for (int xx = 0; xx < 8; ++xx)
+            uint8_t data = font[FONT_OFFSET * u + yy];
+            for (int xx = 0; xx < FONT_SIZE; ++xx)
             {
                 o[xx] = data & 1 ? color : 0;
                 data = data >> 1;
