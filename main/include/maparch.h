@@ -22,7 +22,6 @@ public:
     void insertAt(int i, CMap *map);
     CMap *at(int i);
     bool read(const char *filename);
-    bool extract(const char *filename);
     bool write(const char *filename);
     const char *signature();
     void removeAll();

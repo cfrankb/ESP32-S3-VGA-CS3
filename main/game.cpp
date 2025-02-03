@@ -2,7 +2,6 @@
 #include <string>
 #include "game.h"
 #include "map.h"
-#include "level.h"
 #include "actor.h"
 #include "data.h"
 #include "sprtypes.h"

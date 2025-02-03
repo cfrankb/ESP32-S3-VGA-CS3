@@ -1,6 +1,5 @@
 #include "maparch.h"
 #include "map.h"
-#include "level.h"
 #include <cstdio>
 #include <cstring>
 
@@ -194,29 +193,6 @@ bool CMapArch::write(const char *filename)
 const char *CMapArch::signature()
 {
     return MAAZ_SIG;
-}
-
-bool CMapArch::extract(const char *filename)
-{
-    FILE *sfile = fopen(filename, "rb");
-    if (!sfile)
-    {
-        m_lastError = "can't read header";
-        return false;
-    }
-    char sig[4];
-    fread(sig, 4, 1, sfile);
-    fclose(sfile);
-
-    if (memcmp(sig, MAAZ_SIG, 4) == 0)
-    {
-        return read(filename);
-    }
-    else
-    {
-        m_size = 1;
-        return fetchLevel(*m_maps[0], filename, m_lastError);
-    }
 }
 
 bool CMapArch::indexFromFile(const char *filename, IndexVector &index)
