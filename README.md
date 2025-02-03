@@ -38,6 +38,34 @@ idf.py flash
 
 # Hardware
 
-ESP32S3 + VGA Adapter
+## VGA Adaptor
 
-[see techdocs](techdocs/README.md) for details
+An adaptor is needed to communicate with the VGA Hardware.
+
+
+![Image](techdocs/images/20250202_211146-crop.jpg "icon")
+
+
+kicad / gerber: [cfrankb/ESP32-S3-VGA-ADAPTOR](https://github.com/cfrankb/ESP32-S3-VGA-ADAPTOR)
+
+
+## Gamepad
+
+![Image](techdocs/images/20241222_072413-crop.jpg "icon")
+
+
+
+| Aim   | GPIO Pin |
+| ----- | -------- |
+| UP    | 38       |
+| DOWN  | 35       |
+| LEFT  | 47       |
+| RIGHT | 48       |
+
+```
+CGameController gamepad(GPIO_NUM_38, GPIO_NUM_35, GPIO_NUM_47, GPIO_NUM_48);
+engine->attach(&gamepad);
+```
+
+The above configuration is for the ESP32S3. Pin out will vary per model.
+
