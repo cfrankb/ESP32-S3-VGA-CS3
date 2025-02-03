@@ -22,6 +22,16 @@ https://www.aliexpress.com/item/1005004611997111.html
 
 An adaptor is needed to communicate with the VGA Hardware.
 
+
+![Image](images/20250202_211146-crop.jpg "icon")
+
+
+kicad / gerber: [cfrankb/ESP32-S3-VGA-ADAPTOR](https://github.com/cfrankb/ESP32-S3-VGA-ADAPTOR) 
+
+
+### Manually assembled
+
+
 https://vi.aliexpress.com/item/1005005279582020.html
 
 ![Image](images/20241221_100637-crop.jpg "icon")
