@@ -1,8 +1,13 @@
 # About
 
-This project is a game port to ESP32S3 microcontroller of an MS-DOS Game.
+Transitioning from 1993 x86 Assembly to modern C++ on ESP32-S3 involved re-implementing low-level memory buffers and interrupt-driven logic while maintaining the original game's timing and deterministic behavior.
 
-Current status is alpha. 90% of the core mechanic has been implemented.
+
+To overcome SRAM limitations on the ESP32-S3, the game utilizes a Scanline Composition Engine. Instead of double-buffering the entire screen, sprites and tiles are composited into a single-row offload buffer before being committed to the display surface. This allows for complex transparency and layering without the 300KB+ memory overhead of a back-buffer.
+
+This project serves as a bridge between low-level legacy architecture and modern embedded systems. It involved refactoring 16-bit Assembly logic into a structured, object-oriented C++ framework using the ESP-IDF, demonstrating long-term adaptability in software engineering.
+
+Project focus: High-performance 2D graphics and hardware interfacing. (Note: Utilizing community-standard VGA timing libraries to focus on custom drawing routines and hardware adaptor design).
 
 ## Original MS-DOS
 
@@ -19,6 +24,8 @@ https://github.com/cfrankb/cs3-map-edit
 
 Try the online version of the game:
 https://cfrankb.itch.io/creepspread-iii
+
+Current status is alpha. 90% of the core mechanic has been implemented.
 
 # Software required
 
